@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
-const Projects = require('./project-functions')
+const db = require('./project-functions');
+const Projects = require('./project-functions');
 
 router.get('/', (req, res) => {
     Projects.getProjects()
@@ -13,45 +13,42 @@ router.get('/', (req, res) => {
         });
 });
 
-router.getProjects('/:id', (req, res) => {
-    Projects.getProjects()
-    const { id } = req.params;
-
-    db.findById(id)
-    .then(projects => {
+router.get('/:id', (req, res) => {
+    Projects.findById(req.params.id)
+    .then(project => {
         if (project) {
             res.json(project);
         } else {
             res.status(404).json({ message: 'Project not found' })
         }
     })
-    .catch(err => {
+    .catch(error => {
         res.status(500).json({ message: 'Project not found' });
     });
 });
 
-router.getResources('/:id/resources', (req, res)=> {
-    db
+router.get('/:id/resources', (req, res)=> {
+    Projects.getResources()
     .select('resources.name', 'resources.description')
     .from('resources')
     .join('resources', 'projects.id', '=', 'resources.project_id')
     .then(resources=> {
         res.status(200).json(resources)
     })
-    .catch (err => {
+    .catch (error => {
         res.status(500).json({ message: 'Resources not found' });
     });
 });
 
-router.getTasks('/:id/tasks', (req, res)=> {
-    db
+router.get('/:id/tasks', (req, res)=> {
+    Projects.getTasks()
     .select('tasks.name', 'tasks.description')
     .from('tasks')
-    .join('tasks', 'projects.id', '=', 'tasks.project_id')
+    .join('projects', 'tasks.project_id', '=','projects.id' )
     .then(tasks=> {
         res.status(200).json(tasks)
     })
-    .catch (err => {
+    .catch (error => {
         res.status(500).json({ message: 'Tasks not found' });
     });
 });
@@ -87,7 +84,7 @@ router.post('/resources', (req, res) => {
 })
 
 
-//Update
+//Put
 
 //Delete
 

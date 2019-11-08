@@ -1,13 +1,14 @@
 const db = require('../data/dbConfig')
 
-
 module.exports = {
     getProjects,
     addProject,
     getResources,
     addResource,
+    getResourceById,
     getTasks,
     addTask,
+    getTaskById,
     findById
 }
 
@@ -40,6 +41,13 @@ function addTask(task) {
         })
 }
 
+function getTaskById(id){
+    return db('tasks')
+        .where({ id })
+        .first();
+}
+
+
 
 //resources
 function getResources() {
@@ -52,6 +60,12 @@ function addResource(resource) {
         .then(allids=> {
             return db('resources').where({id: allids[0]}).first();
         })
+}
+
+function getResourceById(id){
+    return db('tasks')
+        .where({ id })
+        .first();
 }
 
 //by id
