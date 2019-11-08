@@ -27,6 +27,16 @@ router.get('/:id', (req, res) => {
     });
 });
 
+router.get('/api/resources', (req, res) => {
+    Projects.getResources()
+        .then(resources => {
+            res.status(200).json(resources)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Resources not found' })
+        });
+});
+
 router.get('/:id/resources', (req, res)=> {
     Projects.getResources()
     .select('resources.name', 'resources.description')
@@ -38,6 +48,16 @@ router.get('/:id/resources', (req, res)=> {
     .catch (error => {
         res.status(500).json({ message: 'Resources not found' });
     });
+});
+
+router.get('/tasks', (req, res) => {
+    Projects.getTasks()
+        .then(tasks => {
+            res.status(200).json(tasks)
+        })
+        .catch(error => {
+            res.status(500).json({ message: 'Tasks not found' })
+        });
 });
 
 router.get('/:id/tasks', (req, res)=> {
@@ -54,9 +74,10 @@ router.get('/:id/tasks', (req, res)=> {
 });
 
 router.post('/', (req, res) => {
+    console.log('testing error');
     Projects.addProject(req.body)
         .then(project => {
-            res.status(201).json(req.body)
+            res.status(201).json(project)
         })
         .catch(error => {
             res.status(500).json(error)

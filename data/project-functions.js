@@ -18,8 +18,9 @@ function getProjects(){
 };
 
 function addProject(project){
+    
     return db('projects')
-    .insert(project)
+    .insert({name, description})
     .then(allids=> {
         return db('projects').where({id: allids[0]}).first();
     })
@@ -51,7 +52,11 @@ function getTaskById(id){
 
 //resources
 function getResources() {
-    return db.select('*').from('resources')
+    return db.select('*')
+    .from('resources')
+    .then(resources => {
+        res.status(200).json(resources);
+    });
 }
 
 function addResource(resource) {

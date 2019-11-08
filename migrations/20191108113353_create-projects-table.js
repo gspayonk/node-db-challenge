@@ -12,7 +12,7 @@ exports.up = function(knex) {
             .unsigned()
             .references('id')
             .inTable('tasks')
-            .onDelete('RESTRICT')
+            .onDelete('CASCADE')
             .onUpdate('CASCADE');
         
         tbl
@@ -20,7 +20,7 @@ exports.up = function(knex) {
             .unsigned()
             .references('id')
             .inTable('resources')
-            .onDelete('RESTRICT')
+            .onDelete('CASCADE')
             .onUpdate('CASCADE');
     })
 
@@ -34,7 +34,7 @@ exports.up = function(knex) {
             .unsigned()
             .references('id')
             .inTable('projects')
-            .onDelete('RESTRICT')
+            .onDelete('CASCADE')
             .onUpdate('CASCADE');
     })
 
@@ -49,8 +49,9 @@ exports.up = function(knex) {
             .unsigned()
             .references('id')
             .inTable('projects')
-            .onDelete('RESTRICT')
-            .onUpdate('CASCADE');
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE')
+            .notNullable();
     })
 
 };
